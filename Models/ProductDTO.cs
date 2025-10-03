@@ -1,30 +1,20 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ecommerce_api.Models
 {
-
-    [Table("Products")]
-    public class Product
+    public class ProductDTO
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
+
         [Required]
         public string? Name { get; set; } = null;
-
         [Required]
         public long CategoryId { get; set; }
-
-        
-        public Category Category { get; set; } = null!;
-
         [Required]
         public decimal Price { get; set; }
         [Required]
-        public string? Description { get; set; } = null;
+        public required string Description { get; set; }
         [Required]
         public int Stock { get; set; }
-
-
     }
 }

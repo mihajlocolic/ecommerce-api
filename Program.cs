@@ -5,12 +5,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson(options => 
+options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+var DbPath = System.IO.Path.Join(path, "Ecommerce.db");
+
 builder.Services.AddDbContext<ECommerceDbContext>(options =>
-    options.UseSqlite($"Data Source=Ecommerce.db"));
+    options.UseSqlite($"Data Source={DbPath}"));
 
 var app = builder.Build();
 
