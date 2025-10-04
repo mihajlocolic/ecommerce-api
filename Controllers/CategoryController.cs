@@ -23,6 +23,17 @@ namespace ecommerce_api.Controllers
             return Ok(categories);
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetCategory(long id)
+        {
+            var category = context.Categories.Include(c => c.Products).FirstOrDefault(c => c.Id == id);
+            if (category == null)
+            {
+                return NotFound("Category not found.");
+            }
+            return Ok(category);
+        }
+
         [HttpPost]
         public IActionResult CreateCategory([FromBody] Category category)
         {
@@ -52,6 +63,24 @@ namespace ecommerce_api.Controllers
             context.SaveChanges();
             return NoContent();
         }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateCategory(long id, [FromBody] Category updatedCategory)
+        {
+            var category = context.Categories.Find(id);
+            if (category == null)
+            {
+                return NotFound("Category not found.");
+            }
+            if (context.Categories.Any(x => x.Name == updatedCategory.Name && x.Id != id))
+            {
+                return BadRequest("Another category with the same name already exists.");
+            }
+            category.Name = updatedCategory.Name;
+            context.SaveChanges();
+            return NoContent();
+        }
+
 
     }
 }

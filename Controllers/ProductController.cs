@@ -26,6 +26,18 @@ namespace ecommerce_api.Controllers
             return Ok(products);
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetProduct(long id)
+        {
+            var product = context.Products.Include(p => p.Category).FirstOrDefault(p => p.Id == id);
+            if (product == null)
+            {
+                return NotFound("Product not found.");
+            }
+            return Ok(product);
+
+        }
+
         [HttpPost]
         public IActionResult CreateProduct([FromBody] ProductDTO productDto)
         {
@@ -67,5 +79,23 @@ namespace ecommerce_api.Controllers
             context.SaveChanges();
             return NoContent();
         }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateProduct(long id, [FromBody] ProductDTO productDTO)
+        {
+            var product = context.Products.Find(id);
+            if (product == null) { return NotFound("Product not found."); }
+            var category = context.Categories.Find(productDTO.CategoryId);
+            if (category == null) { return BadRequest("Category doesn't exist."); }
+
+            product.Name = productDTO.Name;
+            product.CategoryId = productDTO.CategoryId;
+            product.Price = productDTO.Price;
+            product.Description = productDTO.Description;
+            product.Stock = productDTO.Stock;
+            context.SaveChanges();
+            return NoContent();
+        }
+        
     }
 }
