@@ -17,6 +17,19 @@ var DbPath = System.IO.Path.Join(path, "Ecommerce.db");
 builder.Services.AddDbContext<ECommerceDbContext>(options =>
     options.UseSqlite($"Data Source={DbPath}"));
 
+
+var MyAllowSpecificOrigins = "AllowAll";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                     builder => builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -26,6 +39,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthorization();
 

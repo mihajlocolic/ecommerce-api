@@ -35,15 +35,23 @@ namespace ecommerce_api.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateCategory([FromBody] Category category)
+        public async Task<IActionResult> CreateCategory([FromBody] List<Category> categories)
         {
-            if (context.Categories.Any(x => x.Name == category.Name))
+            await context.Categories.AddRangeAsync(categories);
+            if (categories.Count < 1)
             {
-                return BadRequest("Category with the same name already exists.");
+                foreach(Category cat in categories)
+                {
+                    if(context.Categories.Any(c => c.Name == cat.Name))
+                    {
+                        return BadRequest($"Category with the name {cat.Name} already exists.");
+                    }
+                }
+                
             }
-            context.Categories.Add(category);
-            context.SaveChanges();
-            return CreatedAtAction(nameof(CreateCategory), new { id = category.Id }, category);
+            await context.SaveChangesAsync();
+            
+            return Ok();
         }
 
 

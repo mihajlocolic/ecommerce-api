@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata.Ecma335;
-using ecommerce_api.Models;
-using Microsoft.AspNetCore.Http;
+﻿using ecommerce_api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,13 +15,21 @@ namespace ecommerce_api.Controllers
             context = dbContext;
         }
 
-
         [HttpGet]
-        public IActionResult GetProducts()
+        public IActionResult GetProducts([FromQuery] long? categoryId, [FromQuery] string? productName)
         {
-            var products = context.Products.Include(p => p.Category).ToList();
 
-            return Ok(products);
+            var query = context.Products.AsQueryable();
+            if (categoryId.HasValue)
+            {
+                query = query.Where(p => p.CategoryId == categoryId);
+            }
+
+            if (!string.IsNullOrEmpty(productName)) {
+                query = query.Where(p => p.Name != null && p.Name.Contains(productName));
+            }
+            
+            return Ok(query.ToList());
         }
 
         [HttpGet("{id}")]
@@ -96,6 +102,9 @@ namespace ecommerce_api.Controllers
             context.SaveChanges();
             return NoContent();
         }
+
+       
+
         
     }
 }

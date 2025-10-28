@@ -13,7 +13,7 @@ namespace ecommerce_api.Models
         [Required]
         public decimal Price { get; set; }
         [Required]
-        public required string Description { get; set; }
+        public required string? Description { get; set; }
         [Required]
         public int Stock { get; set; }
     }
