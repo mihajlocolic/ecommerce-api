@@ -9,7 +9,6 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
 
 var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 var DbPath = System.IO.Path.Join(path, "Ecommerce.db");
