@@ -1,5 +1,6 @@
 using ecommerce_api.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,11 +9,13 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
 
+builder.Services.AddDbContext<ECommerceDbContext>(
+    options => options.UseSqlite());
 
-var DbPath = Path.Combine(AppContext.BaseDirectory, "Ecommerce.db");
+//var DbPath = Path.Combine(AppContext.BaseDirectory, "Ecommerce.db");
 
-builder.Services.AddDbContext<ECommerceDbContext>(options =>
-    options.UseSqlite($"Data Source={DbPath}"));
+//builder.Services.AddDbContext<ECommerceDbContext>(options =>
+//    options.UseSqlite($"Data Source={DbPath}"));
 
 
 var MyAllowSpecificOrigins = "AllowAll";
@@ -44,6 +47,12 @@ app.UseCors(MyAllowSpecificOrigins);
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ECommerceDbContext>();
+    db.Database.EnsureCreated();
+}
 
 app.Run();
 
