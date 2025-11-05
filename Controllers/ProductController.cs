@@ -45,32 +45,21 @@ namespace ecommerce_api.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateProduct([FromBody] ProductDTO productDto)
+        public async Task<IActionResult> CreateProduct([FromBody] List<ProductDTO> productDtos)
         {
-            if(context.Products.Any(x => x.Name == productDto.Name))
+            await context.Products.AddRangeAsync((Product)(IEnumerable<ProductDTO>)productDtos);
+            if(productDtos.Count < 1)
             {
-                return BadRequest("Product with the same name already exists.");
+                foreach(ProductDTO prod in productDtos) {
+                    if (context.Products.Any(p => p.Name == prod.Name))
+                    {
+                        return BadRequest($"Product with {prod.Name} already exists.");
+                    }
+                }
             }
 
-            var category = context.Categories.Find(productDto.CategoryId);
-            if (category == null)
-            {
-                return BadRequest("Category doesn't exist.");
-            }
-
-            Product product = new Product
-            {
-                Name = productDto.Name,
-                CategoryId = productDto.CategoryId,
-                Price = productDto.Price,
-                Description = productDto.Description,
-                Stock = productDto.Stock
-            };
-
-            category.Products.Add(product);
-            context.Products.Add(product);
-            context.SaveChanges();
-            return CreatedAtAction(nameof(GetProducts), new { id = product.Id }, product);
+            await context.SaveChangesAsync();
+            return Ok();
         }
 
         [HttpDelete("{id}")]
