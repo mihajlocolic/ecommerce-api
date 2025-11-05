@@ -8,8 +8,8 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
 
-var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-var DbPath = System.IO.Path.Join(path, "Ecommerce.db");
+
+var DbPath = Path.Combine(AppContext.BaseDirectory, "Ecommerce.db");
 
 builder.Services.AddDbContext<ECommerceDbContext>(options =>
     options.UseSqlite($"Data Source={DbPath}"));
