@@ -1,4 +1,4 @@
-name: Build and deploy .NET Core application to Web App ecommerce-api20251105080905 with API Management Service ecommerce-apiapi-ecommerce-api
+name: Build and deploy .NET Core application to Web App ecommerce-api20251105080905
 on:
   push:
     branches:
@@ -6,14 +6,6 @@ on:
 env:
   AZURE_WEBAPP_NAME: ecommerce-api20251105080905
   AZURE_WEBAPP_PACKAGE_PATH: ecommerce-api\publish
-  AZURE_APIM_RESOURCE_PATH: /
-  AZURE_APIM_RESOURCEGROUP: DefaultResourceGroup-DEWC
-  AZURE_APIM_SERVICENAME: ecommerce-apiapi
-  AZURE_APIM_API_ID: ecommerce-api
-  AZURE_APIM_APPSERVICEURL: https://ecommerce-api20251105080905-b7c5d8gbazahhhdw.canadacentral-01.azurewebsites.net
-  SWASHBUCLE_ASPNET_CORE_CLI_PACKAGE_VERSION: 5.6.3
-  SWASHBUCKLE_DOTNET_CORE_VERSION: 3.1.x
-  API_IMPORT_SPECIFICATION_PATH: ecommerce-api\publish\swagger.json
   API_IMPORT_DLL: ecommerce-api\bin\Release\net9.0\ecommerce-api.dll
   API_IMPORT_VERSION: v1
   CONFIGURATION: Release
@@ -59,8 +51,6 @@ jobs:
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-    - name: Import API into Azure API Management
-      run: az apim api import --path "${{ env.AZURE_APIM_RESOURCE_PATH }}" --resource-group "${{ env.AZURE_APIM_RESOURCEGROUP }}" --service-name "${{ env.AZURE_APIM_SERVICENAME }}" --api-id "${{ env.AZURE_APIM_API_ID }}" --service-url "${{ env.AZURE_APIM_APPSERVICEURL }}" --specification-path "${{ env.API_IMPORT_SPECIFICATION_PATH }}" --specification-format OpenApi --subscription-required false
     - name: logout
       run: >
         az logout
