@@ -45,12 +45,12 @@ namespace ecommerce_api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct([FromBody] List<ProductDTO> productDtos)
+        public async Task<IActionResult> CreateProduct([FromBody] List<Product> products)
         {
-            await context.Products.AddRangeAsync((Product)(IEnumerable<ProductDTO>)productDtos);
-            if(productDtos.Count < 1)
+            await context.Products.AddRangeAsync(products);
+            if(products.Count < 1)
             {
-                foreach(ProductDTO prod in productDtos) {
+                foreach(Product prod in products) {
                     if (context.Products.Any(p => p.Name == prod.Name))
                     {
                         return BadRequest($"Product with {prod.Name} already exists.");
