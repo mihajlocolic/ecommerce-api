@@ -18,7 +18,9 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<None Include="Ecommerce.db" CopyToOutputDirectory="PreserveNewest" />
+		<None Update="Ecommerce.db">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 
 
