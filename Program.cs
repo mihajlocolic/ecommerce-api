@@ -34,11 +34,11 @@ builder.WebHost.UseUrls($"https://*.{port}");
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
+//// Configure the HTTP request pipeline.
+//if (app.Environment.IsDevelopment())
+//{
+//    app.MapOpenApi();
+//}
 
 app.UseHttpsRedirection();
 
@@ -50,4 +50,4 @@ app.MapControllers();
 
 app.Run();
 
-// Test comment.
+// Test comment
