@@ -3,12 +3,10 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers().AddNewtonsoftJson(options => 
 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 
 var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 var DbPath = System.IO.Path.Join(path, "Ecommerce.db");
@@ -28,8 +26,8 @@ builder.Services.AddCors(options =>
                         .AllowAnyHeader());
 });
 
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-builder.WebHost.UseUrls($"https://*.{port}");
+//var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+//builder.WebHost.UseUrls($"https://*.{port}");
 
 var app = builder.Build();
 
