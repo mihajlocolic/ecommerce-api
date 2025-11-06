@@ -10,7 +10,7 @@ options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoop
 );
 
 builder.Services.AddDbContext<ECommerceDbContext>(
-    options => options.UseSqlite());
+    options => options.UseSqlite("Data Source=/home/site/wwroot/Ecommerce.db"));
 
 //var DbPath = Path.Combine(AppContext.BaseDirectory, "Ecommerce.db");
 

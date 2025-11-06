@@ -17,11 +17,4 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.9" />
   </ItemGroup>
 
-	<ItemGroup>
-		<None Update="Ecommerce.db">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-
-
 </Project>
