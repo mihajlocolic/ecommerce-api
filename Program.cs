@@ -11,7 +11,7 @@ options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoop
 );
 
 
-var connectionStringBuilder = new SqliteConnectionStringBuilder { DataSource = "/home/site/wwroot/Ecommerce.db"};
+var connectionStringBuilder = new SqliteConnectionStringBuilder { DataSource = "\\home\\site\\wwroot\\Ecommerce.db"};
 builder.Services.AddDbContext<ECommerceDbContext>(
     options => options.UseSqlite(connectionStringBuilder.ConnectionString));
 
