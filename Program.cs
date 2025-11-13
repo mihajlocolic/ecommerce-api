@@ -39,7 +39,7 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ECommerceDbContext>();
-    db.Database.EnsureCreated();
+    await db.Database.MigrateAsync();
 
     if(!db.Categories.Any())
     {
