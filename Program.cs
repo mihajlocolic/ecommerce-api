@@ -1,4 +1,5 @@
 using ecommerce_api.Models;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -9,8 +10,10 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
 
+
+var connectionStringBuilder = new SqliteConnectionStringBuilder { DataSource = "/home/site/wwroot/Ecommerce.db"};
 builder.Services.AddDbContext<ECommerceDbContext>(
-    options => options.UseSqlite("Data Source=/home/site/wwroot/Ecommerce.db"));
+    options => options.UseSqlite(connectionStringBuilder.ConnectionString));
 
 
 var MyAllowSpecificOrigins = "AllowAll";
@@ -39,9 +42,10 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ECommerceDbContext>();
-    await db.Database.MigrateAsync();
+    db.Database.EnsureCreated();
+   
 
-    if(!db.Categories.Any())
+    if (!db.Categories.Any())
     {
         db.Categories.AddRange(
             new Category { Name = "Clothing" },
