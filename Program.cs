@@ -12,11 +12,6 @@ options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoop
 builder.Services.AddDbContext<ECommerceDbContext>(
     options => options.UseSqlite("Data Source=/home/site/wwroot/Ecommerce.db"));
 
-//var DbPath = Path.Combine(AppContext.BaseDirectory, "Ecommerce.db");
-
-//builder.Services.AddDbContext<ECommerceDbContext>(options =>
-//    options.UseSqlite($"Data Source={DbPath}"));
-
 
 var MyAllowSpecificOrigins = "AllowAll";
 
@@ -29,16 +24,9 @@ builder.Services.AddCors(options =>
                         .AllowAnyHeader());
 });
 
-//var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-//builder.WebHost.UseUrls($"https://*.{port}");
 
 var app = builder.Build();
 
-//// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//    app.MapOpenApi();
-//}
 
 app.UseHttpsRedirection();
 
@@ -52,6 +40,21 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ECommerceDbContext>();
     db.Database.EnsureCreated();
+
+    if(!db.Categories.Any())
+    {
+        db.Categories.AddRange(
+            new Category { Name = "Clothing" },
+            new Category { Name = "Home & Garden" },
+            new Category { Name = "Sports & Outdoors" },
+            new Category { Name = "Toys & Games" },
+            new Category { Name = "Health & Beauty" },
+            new Category { Name = "Automotive" },
+            new Category { Name = "Music & Instruments" },
+            new Category { Name = "Books" }
+        );
+        db.SaveChanges();
+    }
 }
 
 app.Run();
