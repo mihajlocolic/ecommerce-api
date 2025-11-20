@@ -1,8 +1,5 @@
 using ecommerce_api.Models;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,18 +8,13 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
 
-var connStr = "Database = localdb; Data Source = 127.0.0.1; User Id = azure; Password = 6#vWHD_$";
-var serverVer = new MySqlServerVersion(new Version(8, 0, 33));
+var connStr = builder.Configuration.GetConnectionString("EcommerceDatabase") ?? 
+    throw new InvalidOperationException("Connection string 'EcommerceDatabase' not found.");
+
 
 builder.Services.AddDbContext<ECommerceDbContext>(
-    options => options.UseMySql(connStr, serverVer)
+    options => options.UseMySql(connStr, ServerVersion.AutoDetect(connStr))
 );
-
-
-//var connectionStringBuilder = new SqliteConnectionStringBuilder { DataSource = "C:\\home\\site\\wwwroot\\App_Data\\Ecommerce.db" };
-//builder.Services.AddDbContext<ECommerceDbContext>(
-//    options => options.UseSqlite(connectionStringBuilder.ConnectionString));
-
 
 
 var MyAllowSpecificOrigins = "AllowAll";
