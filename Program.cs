@@ -9,7 +9,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
 
-var connVar = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
+var connVar = Environment.GetEnvironmentVariable("MYSQL_CONNSTR");
 
 Console.WriteLine(connVar);
 
