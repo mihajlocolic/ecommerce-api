@@ -16,7 +16,7 @@ var connVar = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
 
 
 builder.Services.AddDbContext<ECommerceDbContext>(
-    options => options.UseMySql(connVar, ServerVersion.AutoDetect(connVar))
+    options => options.UseMySql(connVar, new MySqlServerVersion(new Version(8, 0, 21)))
 );
 
 

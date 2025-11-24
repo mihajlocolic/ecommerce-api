@@ -16,9 +16,5 @@ namespace ecommerce_api.Models
         public ECommerceDbContext(DbContextOptions<ECommerceDbContext> options)
             : base(options) { }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseMySql(Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb"), ServerVersion.AutoDetect(Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb")));
-
-
     }
 }
