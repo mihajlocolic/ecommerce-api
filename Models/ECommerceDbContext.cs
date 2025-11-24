@@ -10,19 +10,14 @@ namespace ecommerce_api.Models
         public DbSet<Product> Products { get; set; } 
         public DbSet<Category> Categories { get; set; }
 
-        public string DbPath { get; }
+        //public string DbPath { get; }
 
 
         public ECommerceDbContext(DbContextOptions<ECommerceDbContext> options)
-            : base(options)
-        {
-            var folder = Environment.SpecialFolder.LocalApplicationData;
-            var path = Environment.GetFolderPath(folder);
-            DbPath = System.IO.Path.Join(path, "Ecommerce.db");
-        }
+            : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseSqlite($"Data Source={DbPath}");
+            => optionsBuilder.UseMySql(Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb"), ServerVersion.AutoDetect(Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb")));
 
 
     }
