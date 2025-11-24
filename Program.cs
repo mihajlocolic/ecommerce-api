@@ -8,12 +8,14 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
 
-var connStr = builder.Configuration.GetConnectionString("EcommerceDatabase") ?? 
-    throw new InvalidOperationException("Connection string 'EcommerceDatabase' not found.");
+// var connStr = builder.Configuration.GetConnectionString("EcommerceDatabase") ?? 
+//     throw new InvalidOperationException("Connection string 'EcommerceDatabase' not found.");
+
+var connVar = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
 
 
 builder.Services.AddDbContext<ECommerceDbContext>(
-    options => options.UseMySql(connStr, ServerVersion.AutoDetect(connStr))
+    options => options.UseMySql(connVar, ServerVersion.AutoDetect(connVar))
 );
 
 
@@ -63,5 +65,3 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.Run();
-
-// Test comment
