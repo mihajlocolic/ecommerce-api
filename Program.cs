@@ -9,14 +9,20 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
 
-var connVar = Environment.GetEnvironmentVariable("MYSQL_CONNSTR");
 
-Console.WriteLine(connVar);
+var connection = String.Empty;
+if(builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddEnvironmentVariables().AddJsonFile("appsettings.Development.json");
+    connection = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
+} else
+{
+    connection = Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTRING");
+}
 
-builder.Services.AddDbContext<ECommerceDbContext>(
-    options => options.UseMySql(connVar, new MySqlServerVersion(new Version(5, 7, 9)))
+builder.Services.AddDbContext<ECommerceDbContext>(options =>
+    options.UseSqlServer(connection)
 );
-
 
 var MyAllowSpecificOrigins = "AllowAll";
 
@@ -45,7 +51,7 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ECommerceDbContext>();
     db.Database.EnsureCreated();
-   
+
 
     if (!db.Categories.Any())
     {
