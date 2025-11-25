@@ -17,7 +17,7 @@ if(builder.Environment.IsDevelopment())
     connection = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
 } else
 {
-    connection = Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTRING");
+    connection = Environment.GetEnvironmentVariable("SQLAZURECONNSTR_AZURE_SQL_CONNECTIONSTRING");
 }
 
 builder.Services.AddDbContext<ECommerceDbContext>(options =>
